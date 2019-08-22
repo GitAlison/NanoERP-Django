@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="p-1 card-header">
+        <h3 class="m-0 p-0 float-left">Entradas</h3>
+        <div class="float-right button">
+            <a class="btn btn-primary" href="{% url 'pedido:nota-create' %}"> <i class="fa fa-cart-plus" aria-hidden="true"></i> Novo Entrada</a>
+        </div>
+    </div>
+    <div class="card-block">
+        {% if entrada_list %}
+        <table class="listagem table table-sm table-stacked table-hover table-striped ">
+            <thead>
+            <tr>
+                <th class="text-center">N°NF</th>
+                <th>Emissao</th>
+                <th>Entrada</th>
+                <th>Fornecedor</th>
+                <th>Funcionario</th>
+                <th>Desconto</th>
+                <th>Total</th>
+                <th width="150px">Ação</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for obj in entrada_list %}
+            <tr>
+                <td class="text-center text-danger" scope="row"><b>{{obj.nf}}</b></td>
+                <td width="80px">{{obj.data_emissao|date:'d/m/y'}}</td>
+                <td width="80px">{{obj.data_entrada|date:'d/m/y'}}</td>
+                <td>{{obj.fornecedor}}</td>
+                <td>{{obj.funcionario}}</td>
+
+                <td>{{obj.desconto}}</td>
+                <td>{{obj.total}}</td>
+                <td>
+                    <a class="" href="{% url 'pedido:entrada-update' obj.id %}">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                    </a>
+                    <a class="text-danger" href data-toggle="modal" data-target="#modelId">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                    <a class="" href="{% url 'pedido:entrada-detail' obj.id %}">
+                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                    </a>
+                </td>
+                
+            </tr>
+            <div class="modal fade " id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+             aria-hidden="true">
+                <div class="modal-dialog " role="document">
+                    <div class="modal-content">
+                        <div class="modal-header ">
+                            <h4 class="modal-title" id="modelTitleId">Modal title</h4>
+
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Deseja realmente deletar a nota numero: {{obj.id}} valor de : {{obj.total}}
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-danger" href="{% url 'pedido:entrada-delete' obj.id %}" > <i class="fa fa-trash"></i> Deletar </a>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+            {% empty %}
+            <li class="text-center list-group-item"> <i class="fa fa-database" aria-hidden="true"></i> Não existe dados</li>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+        {% else %}
+
+        <li class="text-center list-group-item"> <i class="fa fa-database" aria-hidden="true"></i> Não existe dados</li>
+
+        {% endif %}
+
+
+    </div>
+    <div class="card-footer text-muted">
+        <div class="float-right button">
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

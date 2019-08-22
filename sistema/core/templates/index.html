@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{%load staticfiles %}
+{% block content %}
+
+<style>
+        .card-block a{
+color:black;
+font-weight: 600;
+}
+</style>
+
+<!-- <div class="card-block float-left p-3 text-center">
+        <a href=""> <img width="100px" src="{% static 'img/saida.png' %}" alt=""></a><br>
+        <a href="">{{saida}}</a><br>
+        <a href="">Vendas</a>
+</div>
+<div class="card-block float-left p-3 text-center ">
+        <a href=""> <img width="100px" src="{% static 'img/entrada.png' %}" alt=""></a><br>
+        <a href="">{{entrada}}</a><br>
+        <a href="">Entradas</a>
+</div>
+<div class="card-block float-left p-3 text-center ">
+        <a href=""> <img width="100px" src="{% static 'img/fornecedor.png' %}" alt=""></a><br>
+        <a href="">{{fornecedor}}</a><br>
+        <a href="">Fornecedores</a>
+</div>
+<div class="card-block float-left p-3 text-center ">
+        <a href=""> <img width="100px" src="{% static 'img/cliente.png' %}" alt=""></a><br>
+        <a href="">{{cliente}}</a><br>
+        <a id="linkClientes">Clientes</a>
+</div>
+<div class="card-block float-left p-3 text-center ">
+        <a href=""> <img width="100px" src="{% static 'img/funcionario.png' %}" alt=""></a><br>
+        <a href="">{{funcionario}}</a><br>
+        <a href="">Funcionarios</a>
+</div>
+<div class="card-block float-left p-3 text-center ">
+        <a href=""> <img width="100px" src="{% static 'img/produto.png' %}" alt=""></a><br>
+        <a href="">{{produto}}</a><br>
+        <a href="">Produtos</a>
+</div>
+
+ -->
+<div class="row">
+        <div class="col-sm-4">
+                <div class="card">
+                  <div class="card-header">
+                    Pedidos
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Saidas</li>
+                    <li class="list-group-item">Entradas</li>
+                    <li class="list-group-item">Orçamentos</li>
+                  </ul>
+                </div>
+        </div>
+        <div class="col-sm-4">
+                <div class="card">
+                  <div class="card-header">
+                    Clientes
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Saidas</li>
+                    <li class="list-group-item">Entradas</li>
+                    <li class="list-group-item">Orçamentos</li>
+                  </ul>
+                </div>
+        </div>
+</div>
+
+
+
+{%endblock content%}
+
+{% block script %}
+
+{% endblock script %}

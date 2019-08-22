@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block content %}
+
+
+
+
+<div class="card">
+    <div class="p-1 card-header">
+        <h3 class="m-0 p-0 float-left">Registro de produtos</h3>
+        <div class="float-right button">
+            <a class="btn btn-primary" href="{% url 'cadastro:produto-list' %}"> <i class="fa fa-arrow-left"
+                    aria-hidden="true"></i> Voltar</a>
+        </div>
+    </div>
+
+    <div class="card-block p-0">
+        <div id="tabs" class="p-0">
+            <ul>
+                <li><a href="#geral">Geral</a></li>
+                <li><a href="#fornecedor">Fornecedores</a></li>
+                <li><a href="#controles">Controles</a></li>
+            </ul>
+            <form action="" method="post" enctype="multipart/form-data">
+
+                <div id="geral">
+                    {%csrf_token%}
+                    <div class="row">
+                        {{form.errors}}
+                        <div class="col-sm-6">
+                            {{form.descricao.label_tag}}
+
+                            {{form.descricao}}
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    {{form.preco.label_tag}}
+                                    {{form.preco}}
+                                </div>
+                                <div class="col-sm-3">
+                                    {{form.custo.label_tag}}
+                                    {{form.custo}}
+                                </div>
+                                <div class="col-sm-6">
+                                    {{form.unidade.label_tag}}
+                                    {{form.unidade}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    {{form.categoria.label_tag}}
+                                    {{form.categoria}}
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    {{form.estoque_minimo.label_tag}}
+                                    {{form.estoque_minimo}}
+                                </div>
+                                <div class="col-sm-4">
+                                    {{form.estoque_atual.label_tag}}
+                                    {{form.estoque_atual}}
+                                </div>
+                                <div class="col-sm-4">
+                                        <div class="form-check">
+                                                <label class="form-check-label">
+                                                    {{form.controle_estoque.label_tag}}
+                                                    {{form.controle_estoque}}
+                                                </label>
+                                            </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    {{form.cod_barras.label_tag}}
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-sm btn-secondary" type="button" aria-label="">
+                                                <i class="fa fa-barcode" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
+                                        {{form.cod_barras}}
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+                            Foto
+                            <div style="max-width:220px" class="card card-inverse card-primary">
+                                {% if form.foto %}
+                                <img class="card-img-top img-fluid" src="/media/{{form.foto.value}}" alt="">
+                                {% else %}
+                                <img class="card-img-top img-fluid" src="{{form.foto}}" alt="">
+                                {%endif%}
+                                <div class="card-block">
+
+                                </div>
+
+                            </div>
+                            <div hidden>{{form.foto}}</div>
+                            <label for="id_foto"> Selecione a foto <i style="font-size:20pt;" class="fa fa-picture-o"
+                                    aria-hidden="true"></i></label>
+                        </div>
+                    </div>
+                    <br>
+
+
+                </div>
+                <div id="fornecedor">
+                    <h2>Fornecedores</h2>
+
+                    {{fornecedor_formset.management_form}}
+                    <div class="row">
+                        <div class="col-sm-5">
+                            Fornecedor
+
+                        </div>
+                        <div class="col-sm-2">
+                            Unidade
+                        </div>
+                        <div class="col-sm-2">
+                            Quantidade
+                        </div>
+                        <div class="col-sm-2">
+                            Deletar
+                        </div>
+                    </div>
+                    {% for item in fornecedor_formset %}
+                    <div hidden>{{item}}</div>
+
+                    <div class="row">
+                        <div class="col-sm-5">
+                            {{item.fornecedor}}
+                        </div>
+                        <div class="col-sm-2">
+                            {{item.unidade}}
+                        </div>
+                        <div class="col-sm-2">
+                            {{item.quantidade}}
+
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    {{item.DELETE}}
+                                </label>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                </div>
+                <div id="controles">
+                    
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            {{form.fora_de_linha.label_tag}}
+                            {{form.fora_de_linha}}
+                        </label>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="submit" class="ml-3 mb-2 btn btn-primary"> <i class="fa fa-check" aria-hidden="true"></i>
+                            Salvar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <div class="card-footer text-muted">
+        <div class="float-right button">
+
+            <i class="fa fa-info" aria-hidden="true"></i>
+            O cadastro de produto tambem pode ser utilizado como cadastro de serviço e despesas
+            Usando abreviações como SER para serviço ou DES exemplo SERV-Limpesa
+        </div>
+    </div>
+</div>
+{% endblock content %}
