@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="p-1 card-header">
+        <h3 class="m-0 p-0 float-left">Registro de Categoria</h3>
+        <div class="float-right button">
+            <a class="btn btn-primary" href="{% url 'cadastro:categoria-list' %}"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar</a>
+        </div>
+    </div>
+    <div class="card-block p-2">
+
+        <form action="" method="post">
+            {%csrf_token%}
+            <div class="row">
+
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            {{form.nome.label_tag}}
+                            {{form.nome}}
+                        </div>
+                        <div class="col-sm-8">
+                            {{form.descricao.label_tag}}
+                            {{form.descricao}}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+
+                </div>
+            </div>
+            <br>
+            <div class="row" >
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary"> <i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="card-footer text-muted">
+        <div class="float-right button">
+
+        <i class="fa fa-info" aria-hidden="true"></i>
+            O cadastro de produto tambem pode ser utilizado como cadastro de serviço e despesas
+        Usando abreviações como SER para serviço ou DES exemplo  SERV-Limpesa
+        </div>
+    </div>
+</div>
+{% endblock content %}

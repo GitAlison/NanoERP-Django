@@ -1,0 +1,93 @@
+{% extends 'relatorio_base.html' %}
+
+{% block content %}
+<div class="container-fluid pt-1">
+
+    <div class="border border-dark">
+        <h3 class="text-center pt-1">Nota de {{nota.tipo}}</h3>
+    </div>
+    <div class="border border-dark p-2">
+        <div class="row">
+            <div class="col-sm-4 text-center">
+                <h5 class="text-center">Emitente</h5>
+
+                <p>Nome/Razão: <b>{{nota.fornecedor.nome}}</b></p>
+                <p>Logradouro: <b>{{nota.fornecedor.logradouro}}</b> N°: {{nota.fornecedor.numero}}Bairro: <b>{{nota.fornecedor.bairro}}</b>
+                    Cidade: <b>{{nota.fornecedor.cidade}}</b> </p>
+                <p>UF: <b>{{nota.fornecedor.uf}}</b> CEP: <b>{{nota.fornecedor.cep}}</b> </p>
+                <p>Telefone: <b>{{nota.fornecedor.telefone}}</b>
+                    WhatsApp: <b>{{nota.fornecedor.whatsapp}}</b>
+                    Celular: <b>{{nota.fornecedor.celular}}</b></p>
+            </div>
+            <div class="col-sm-4">
+                <h5 class="text-center">Nota : {{nota.id}}</h5>
+            </div>
+            <div class="col-sm-4">
+                <h5 class="text-center">Datas</h5>
+                <p>Emissão: <b>{{nota.data_emissao}}</b> </p>
+                <p>nota: <b>{{nota.data_nota}}</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="border border-dark p-2">
+        <h3 class="text-center pt-1">Destinatario</h3>
+        <div class="row">
+            <div class="col-sm-6">
+                <b class="text-center">Endereço</b>
+                <p>Nome/Razão: <b>{{nota.cliente.nome}}</b></p>
+                <p>Logradouro: <b>{{nota.cliente.logradouro}}</b> N°: {{nota.cliente.numero}}Bairro: <b>{{nota.cliente.bairro}}</b>
+                    Cidade: <b>{{nota.cliente.cidade}}</b> </p>
+                <p>UF: <b>{{nota.cliente.uf}}</b> CEP: <b>{{nota.cliente.cep}}</b> </p>
+            </div>
+            <div class="col-sm-6">
+                <b class="text-center">Contato</b>
+                <p>Telefone: <b>{{nota.cliente.telefone}}</b></p>
+                <p>WhatsApp: <b>{{nota.cliente.whatsapp}}</b></p>
+                <p>Celular: <b>{{nota.cliente.celular}}</b></p>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="border border-dark p-2">
+        <h3 class="text-center ">Produtos</h3>
+        <table class="table table-striped table-inverse ">
+            <thead class="thead-inverse">
+                <tr class="table-dark">
+                    <th>COD</th>
+                    <th>DESCRIÇÃO</th>
+                    <th>QUANTIDADE</th>
+                    <th>VALOR CUSTO</th>
+                    <th>DESCONTO</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in nota.itemnota_set.all %}
+                <tr>
+                    <td scope="row">{{item.produto.id}}</td>
+                    <td>{{item.produto}}</td>
+                    <td>{{item.quantidade}}</td>
+                    <td>{{item.valor_unitario}}</td>
+                    <td>{{item.desconto_item}}</td>
+                    <td>{{item.total_item}}</td>
+                </tr>
+                {% empty %}
+                <span class="h3 badge badge-primary">Não ha Produtos !</span>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    <div class="border border-dark p-2">
+        <h3 class="text-center ">Totais</h3>
+        <h4 class="text-right text-danger ">Desconto Total: <b>{{nota.desconto}}</b> </h4>
+        <h4 class="text-right text-success ">Valor Total: <b>{{nota.total}}</b> </h4>
+    </div>
+    <div class="border border-dark p-2">
+        <h3 class="text-center pt-1">Observações</h3>
+        <p>{{nota.observacoes | linebreaks}}</p>
+    </div>
+
+</div>
+{% endblock content %}

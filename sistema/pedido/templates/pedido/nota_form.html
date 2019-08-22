@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <div class="p-1 card-header">
+        <h3 class="m-0 p-0 float-left">
+            {% if nota.id %}
+            Edição de {{nota.tipo}} Numero {{nota.id}}
+            {% else %}
+            Nova Nota
+            {% endif %}
+        </h3>
+        <div class="float-right button">
+                {% if nota.status == '0' %}
+                <a class="btn btn-block btn-danger" href="{% url 'pedido:remover-nota' nota.id %}"><i class="fa fa-minus"></i>Remover Estoque</a>
+                {% elif nota.status == '1' %}
+                <a class="btn btn-block btn-success" href="{% url 'pedido:concluir-nota' nota.id %}"> <i class="fa fa-plus"></i> Colocar Estoque</a>
+                {% endif %}
+        </div>
+    </div>
+    <div class="card-block p-2">
+        {{saida_form.errors}}
+        <form action="" method="post">
+            {%csrf_token%}
+            <div class="row">
+                <div class="col-sm-2">
+                    {{form.errors}}
+                    {{form.tipo.label}}
+                    {{form.tipo}}
+                </div>
+                <div class="col-sm-2">
+                    {{form.errors}}
+                    {{form.numero.label}}
+                    {{form.numero}}</div>
+                <div class="col-sm-2">
+                    {{form.errors}}
+                    {{form.serie.label}}
+                    {{form.serie}}
+                </div>
+                <div class="col-sm-6">
+                    {{form.errors}}
+                    {{form.chave.label}}
+                    {{form.chave}}
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-6">
+                    {{form.errors}}
+                    {{form.cliente.label}}
+                    {{form.cliente}}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{form.funcionario.label}}
+                            {{form.funcionario}}
+                        </div>
+                        <div class="col-sm-6">
+                            {{form.data_emissao.label}}
+                            {{form.data_emissao}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{form.desconto.label}}
+                            {{form.desconto}}
+
+                        </div>
+                        <div class="col-sm-6">
+                            {{form.despesa.label}}
+                            {{form.despesa}}
+                            {{form.total.label}}
+                            {{form.total}}
+                            {{form.total.error}} <br>
+
+                            
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    {% if nota.id %}
+
+                    <button type="submit" class="btn btn-primary"> <i class="fa fa-check" aria-hidden="true"></i>
+                        Atualizar</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-primary"> <i class="fa fa-check" aria-hidden="true"></i>
+                        Continuar</button>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+        <br>
+        {% if nota.id %}
+        <h5>Adicionar Item</h5>
+
+        <table class="">
+            <thead>
+                <tr>
+                    <th width="350px">Produto</th>
+                    <th width="100px">Quantidade</th>
+                    <th width="">Valor Unit.</th>
+                    <th width="">Desconto</th>
+                    <th width="">Total Item</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <form class="add_produto" action="{% url 'pedido:add-item-nota' %}" method="post">
+                    {% csrf_token %}
+
+                    {{item_form.errors}}
+                    <tr class="add_produto">
+
+                        <input hidden type="text" name="nota" value="{{nota.id}}">
+                        <td width="auto">{{item_form.produto}}</td>
+                        <td>{{item_form.quantidade}}</td>
+                        <td>{{item_form.valor_unitario}}</td>
+                        <td>{{item_form.desconto_item}}</td>
+                        <td>{{item_form.total_item}}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary " type="submit">
+                                <i class="fa fa-plus-circle"></i></button>
+                        </td>
+                        <td>
+                            <a href="{% url 'cadastro:produto' %}" class="btn btn-sm btn-primary text-light"><i class="fa fa-plus-circle"></i>
+                                Novo produto</a>
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+        </table>
+        <table class="table table-striped table-responsive table-sm table-bordered table-hover table-inverse">
+            <thead class="thead-inverse|thead-default">
+
+                <tr>
+                    <th width="50px">Sequencia</th>
+                    <th width="50%">Descrição</th>
+                    <th width="50px">Un</th>
+                    <th width="50px">Quantidade</th>
+                    <th>Vlr Unitario</th>
+                    <th>Desconto</th>
+                    <th width="120px">Total Item</th>
+                    <th width="50px"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in nota.itemnota_set.all %}
+
+                <tr>
+                    <td scope="row">{{item.id}}</td>
+                    <td>{{item.produto|upper}}</td>
+                    <td>{{item.produto.unidade}}</td>
+                    <td>{{item.quantidade}}</td>
+                    <td class="text-right" width="100px">{{item.valor_unitario}}</td>
+                    <td class="text-right" width="100px">{{item.desconto_item}}</td>
+                    <td class="text-right" id="sub_total">{{item.total_item}}</td>
+                    <td>
+                        <a href="{%url 'pedido:update-item-nota' item.id %}"><i class="text-info fa fa-edit"
+                                aria-hidden="true"></i></a>-
+                        <a href="{%url 'pedido:delete-item-nota' item.id %}"><i class="text-danger fa fa-trash"
+                                aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+                {%endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td scope="row"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right" width="100px"></td>
+                    <td class="text-right" width="100px"></td>
+                    <td class="text-right bg-dark text-light " id="sub_total">{{form.total.value}}</td>
+                    <td>  </td>
+                </tr>
+            </tfoot>
+        </table>
+        {% else %}
+        {% endif %}
+    </div>
+
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+    $(document).ready(function () {
+
+
+    });
+    var produto = $("select[name$='produto']");
+    var produto_input = $('.add_produto');
+
+    $('input[name$="valor_unitario"]').val(0);
+    $('input[name$="quantidade"]').val(1);
+    $('input[name$="desconto_item"]').val(0);
+    $('input[name$="total_item"]').val(0);
+
+    function calcular() {
+        var preco = $('input[name$="valor_unitario"]').val().replace(',', '.');
+        var quantidade = $('input[name$="quantidade"]').val().replace(',', '.');;
+        var desconto = $('input[name$="desconto_item"]').val().replace(',', '.');;
+
+        var total_item = (parseFloat(preco) * parseFloat(quantidade) - parseFloat(desconto)).toFixed(2);
+
+        $('input[name$="total_item"]').val(total_item);
+
+
+
+    }
+
+    $(produto_input).on('change', function () {
+        calcular();
+    });
+
+    $('select[name$="produto"]').on('change', function () {
+        var produto = this.value
+        console.log(this.value);
+        $.ajax({
+            url: "/cadastro/produtoApi/" + produto,
+            dataType: "json",
+            type: "get",
+            success: function (data) {
+                console.log(data);
+                $('input[name$="valor_unitario"]').val(data[0].preco);
+                calcular();
+
+            }
+        })
+    });
+
+</script>
+{% endblock script %}

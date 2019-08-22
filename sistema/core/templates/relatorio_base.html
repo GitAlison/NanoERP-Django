@@ -1,0 +1,51 @@
+<!doctype html> {% load staticfiles %}
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+
+  <link rel="stylesheet" href="{% static 'css/select2.css' %}">
+  <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+  <link rel="stylesheet" href="{% static 'jquery-ui-1.12.1/jquery-ui.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/iconfonts/mdi/css/materialdesignicons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/css/vendor.bundle.base.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/css/vendor.bundle.addons.css' %}">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" />
+  <title>Detalhe</title>
+</head>
+
+<body>
+
+    {% block content %}
+    {% endblock content %}
+    
+  
+  
+  
+  <script src="{% static 'js/select2.min.js' %}"></script>
+  <script src="{% static 'js/jquery.mask.js' %}"></script>
+  <script src="{% static 'jquery-ui-1.12.1/jquery-ui.js' %}"></script>
+  <!-- Dashboard -->
+  <script src="{% static 'vendors/js/vendor.bundle.base.js' %}"></script>
+  <script src="{% static 'vendors/js/vendor.bundle.addons.js' %}"></script>
+
+  <script src="{% static 'js/off-canvas.js' %}"></script>
+  <script src="{% static 'js/misc.js' %}"></script>
+  <script src="{% static 'js/dashboard.js' %}"></script>
+
+  {% block script %}
+  {% endblock script%}
+  <script>
+
+  </script>
+</body>
+
+</html>

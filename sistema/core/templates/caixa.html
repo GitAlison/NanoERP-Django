@@ -1,0 +1,265 @@
+<!doctype html> {% load staticfiles %}
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/select2.css' %}">
+  <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+  <link rel="stylesheet" href="{% static 'jquery-ui-1.12.1/jquery-ui.css' %}">
+  <title>CAIXA</title>
+</head>
+
+<body  class="bg-light" >
+
+  <nav class="m-0 p-0  navbar navbar-expand-sm  navbar-dark bg-primary ">
+    <a class="navbar-brand" href="">sistema</a>
+    <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+      aria-expanded="false" aria-label="Toggle navigation"></button>
+    <div class="collapse navbar-collapse " id="collapsibleNavId">
+      <ul class=" navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'core:index'%}">
+            <img width="40px" src="{% static 'img/dashboard.png' %}" alt=""> Painel</a>
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div id="app" class="container-fluid">
+    <br> {% for message in messages %}
+    <div style="opacity:100;" class="alert alert-warning alert-dismissible fade in" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <strong>{{message}}</strong>
+    </div>
+    {% endfor %}
+
+      <div class="row">
+          <div class="col-sm-4">
+              <div class="input-group">
+                  <input autocomplete="off" class="form-control produto" style="font-size:20px;" placeholder="Codigo do produto" name="produto" type="text"><br>
+                  <span class="input-group-btn ">
+                      <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+                          <i class="fa fa-search-plus" aria-hidden="true"></i>
+                      </button>
+                  </span>
+              </div>
+
+              <div class="imaggem-produto"><br>
+                  <img width="100%" src="{% static 'img/produto.jpg' %}" alt="">
+              </div>
+          </div>
+
+          
+   
+
+
+          <div class="col-sm-8">
+
+                  <input v-model="result" name="produto_result" style="width:100%;font-size:30px;color:black;" class="alert alert-outline-dark" type="text" value="">
+                <i>Items</i>
+              <table class="bg-white table table-sm table-bordered mb-6">
+                  <thead>
+
+                  <tr>
+
+                      <th>Item</th>
+                      <th>Descricao</th>
+                      <th>Quant.</th>
+                      <th>Un</th>
+                      <th>Vlr Unit.</th>
+                      <th>Vlr Total.</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr v-for="(item,index) in order" >
+                      <td scope="row">{index}</td>
+                      <th>{item.name}</th>
+                      <th>1</th>
+                      <th>{item.un}</th>
+                      <th>{item.venda}</th>
+                      <th>{item.venda * item.venda}</th>
+
+
+                  </tr>
+
+                  </tbody>
+              </table>
+
+          </div>
+
+
+
+      </div>
+      <div class="bg-warning fixed fixed-bottom row">
+              <div class="col-sm-6">
+                <b>Data hoje:</b> 20/08/2018 <br>
+                  <b>Hora:</b>10:35
+                  <b class="text-light">Caixa Aberto</b>
+              </div>
+              <div class="col-sm-6">
+                  <h3 class="float-right">Total: {total} R$ &csub;</h3>
+              </div>
+      </div>
+
+
+      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Pesquisar Produto</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input @keyup.enter="getProducts" class="form-control mb-2" type="text" v-model="query" name="query">
+            <p v-if="loading" class="text-center"> <img src="{% static 'img/loading.svg' %}"> </p>
+            <table class="bg-white table table-sm table-hover table-bordered ">
+                  <thead>
+
+                  <tr>
+
+                      <th>Cod</th>
+                      <th>Descricao</th>
+                      <th>UN</th>
+                      <th>Custo</th>
+                      <th>Venda</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    
+                  <tr @click="itemToOrder(item)" v-for='item in products' >
+                      <td scope="row">{item.id}</td>
+                      <th>{item.descricao}</th>
+                      <th>{item.unidade}</th>
+                      <th>{item.custo}</th>
+                      <th>{item.preco}</th>
+                  </tr>
+                  </tbody>
+              </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- Modal seach -->
+
+    <!-- Modal -->
+    
+  <!-- End Modal Search -->
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/select2.min.js' %}"></script>
+  <script src="{% static 'js/jquery.mask.js' %}"></script>
+  <script src="{% static 'jquery-ui-1.12.1/jquery-ui.css' %}"></script>
+  <script src="{% static 'js/vue.js' %}" type="text/javascript"></script>
+  <script src="{% static 'js/axios.min.js' %}" type="text/javascript"></script>
+{% block script %}
+{% endblock script%}
+</body>
+<script type="text/javascript">
+
+var app = new Vue({
+  el:'#app',
+  delimiters:['{','}'],
+  data:{
+    products: [],
+    result:'',
+    loading:false,
+    query:'',
+    order:[],
+    total:0
+  },
+  methods:{
+    getProducts(){
+      var vm = this;
+      vm.loading = true
+      axios.get('http://127.0.0.1:8000/api/search-produtos/'+vm.query).then(function(r){
+        vm.products = r.data;
+        vm.loading = false;
+      });
+    },
+    itemToOrder(product){
+      this.order.push(
+        {name:product.descricao,venda:product.preco,un:product.unidade},
+      );
+      this.totalOrder(product.preco);
+      this.result = product.descricao;
+    },
+    totalOrder(value){
+      this.total += parseFloat(value);      
+    },
+    
+  }
+});
+
+
+</script>
+<!-- <script>
+
+    $(document).ready(function(){
+      $('.produto').focus();
+      $('.select2').select2();
+      $('.form-control').addClass('form-control-sm');
+      $('.form-control-sm').css('heigth','1.5');
+      $('.form-control').css('border-radius','0px');
+      $('label').css('font-size','14px');
+      $('.errorlist').addClass('alert alert-danger m-0 p-1');
+
+    });
+
+
+    $('.produto').keypress(function(e){
+        var input_produto = $('input[name$="produto"]');
+        if(e.which == 13 ){
+
+
+        var field = input_produto.val();
+        var produto = field.split('*');
+
+        var quantidade = produto[0];
+        var cod_produto = produto[1];
+        console.log('Quantidade:'+quantidade);
+        console.log('Cod produto:'+cod_produto);
+
+        $.ajax({
+
+            url : "/cadastro/produtoApi/"+cod_produto,
+            type:"get",
+            dataType:"json",
+            success:function(data){
+                if(data[0]){
+                    $('input[name$="produto_result"]').val(data[0].descricao);
+                    $('input[name$="produto_result"]').removeClass('text-warning');
+                    $('input[name$="produto"]').val("");
+                }
+                else{
+                    $('input[name$="produto_result"]').val("Produto nao encontrado");
+                    $('input[name$="produto"]').val("");
+
+                }
+
+            },
+            error:function(){
+                $('input[name$="produto_result"]').val("Produto nao encontrado");
+                $('input[name$="produto"]').val("");
+            }
+
+        })
+        }
+
+    });
+
+</script>
+ -->
+
+</html>

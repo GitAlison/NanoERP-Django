@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="card">
+    <div class="p-1 card-header">
+        <h3 class="m-0 p-0 float-left">Produtos</h3>
+        <div class="float-right button">
+            <a class="btn btn-primary" data-toggle="modal" data-target="#modelId" > <i class="fa fa-search" aria-hidden="true"></i> </a>
+            <a class="btn btn-primary" href="{% url 'cadastro:produto' %}"> <i class="fa fa-plus" aria-hidden="true"></i> Adicionar</a>
+        </div>
+        <!-- Button trigger modal -->
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modelTitleId">Pesquisar Produtos</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="app" class="modal-body ">
+                        <div class="input-group">
+
+
+                            <input type="text" v-model="query"
+                                   name="name" id="name" class="form-control" placeholder="Descrição do produto"
+                                   aria-describedby="sufixId">
+                            <button @click="buscarProdutos()" class="input-group-addon btn btn-primary" id="sufixId"> Ir </button>
+                        </div>
+
+                        <p v-if="loading" class="text-center" ><img src="{% static 'img/loading.svg' %}" alt="Loading..."> </p>
+                        <p class="text-center" >{resposta}</p>
+
+                        <table v-if="produtos != ''" class="table ">
+                            <thead>
+                            <tr>
+                                <th>Cod</th>
+                                <th>Descrição</th>
+                                <th>Custo</th>
+                                <th>Venda</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="item in produtos" >
+                                <td scope="row">{item.id}</td>
+                                <td>{item.descricao}</td>
+                                <td>{item.custo}</td>
+                                <td>{item.preco}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-block">
+
+        {% if produto_list %}
+        <table class="listagem table table-sm table-stacked table-hover table-striped ">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Cod:</th>
+                <th>Descrição</th>
+                <th>Unidade</th>
+                <th>Categoria</th>
+                <th>Custo</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+                <th class="text-center">Linha</th>
+                <th width="100px">Ação</th>
+            </tr>
+            </thead>
+            <tbody  >
+            {% for obj in produto_list %}
+            <tr  >
+
+                <td>
+                    {%if obj.foto %}
+                    <img width="50px" src="{{obj.foto.url}}" alt="">
+                    {%else %}
+                    <h5>Sem <br>Foto</h5>
+                    {%endif%}
+                </td>
+                <td scope="row">{{obj.id}}</td>
+                <td> <a href="{% url 'cadastro:produto-update' obj.id %}">{{obj.descricao}}</a></td>
+                <td>{{obj.unidade}}</td>
+                <td>{{obj.categoria}}</td>
+                <td>{{obj.custo}}</td>
+                <td>{{obj.preco}}</td>
+                {% if obj.estoque_atual <= 0 %}
+                <td class="bg-danger" >{{obj.estoque_atual}}</td>
+                {%else%}
+                <td class="bg-success">{{obj.estoque_atual}}</td>
+                {%endif%}
+                <td class="text-center">
+                {% if obj.fora_de_linha == True %}
+                <i class="text-danger fa fa-circle" aria-hidden="true"></i>
+                {%else %}
+                <i class="text-success fa fa-circle" aria-hidden="true"></i>
+
+                {%endif%}
+                </td>
+                <td>
+                    <a class="" href="{% url 'cadastro:produto-update' obj.id %}">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <li class="text-center list-group-item"> <i class="fa fa-database" aria-hidden="true"></i> Não existe dados</li>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+        {% else %}
+
+        <li class="text-center list-group-item"> <i class="fa fa-database" aria-hidden="true"></i> Não existe dados</li>
+
+        {% endif %}
+
+
+    </div>
+    <div class="card-footer text-muted">
+        <div class="float-right button">
+
+        </div>
+    </div>
+    
+
+
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+    new Vue({
+        el: '#app',
+        delimiters: ['{','}'],
+        data:{
+            titulo:'Pesquisa de Produtos',
+            loading: false,
+            produtos: [],
+            query: '',
+            resposta: '',
+        },
+        watch:{
+            query: function(newValue,oldValue){
+                this.loading = true;
+                this.resposta = 'Aguardando terminar de digitar...';
+                this.recolheResposta()
+
+
+            }
+        },
+        methods:{
+            buscarProdutos(){
+                var vm = this;
+                vm.loading = true
+                axios.get('http://127.0.0.1:8000/api/produtos').then(function(r){
+                    vm.produtos = r.data;
+                    vm.loading = false;
+                });
+            },
+            buscaProduto(){
+                var vm = this;
+                axios.get('http://127.0.0.1:8000/api/search-produtos/'+vm.query).then(function(r){
+                    vm.produtos = r.data;
+                    vm.loading = false
+                });
+            },
+            recolheResposta(){
+                let valor = this.query;
+
+                setTimeout(()=>{
+                    if(valor == this.query)
+                        this.resposta = 'Terminou de digitar.'
+                        this.buscaProduto()
+
+                },500 )
+            }
+        }
+
+    });
+</script>
+{% endblock script%}
+

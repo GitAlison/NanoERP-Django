@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+<h5>Atualizar Item</h5>
+{% if itementrada.entrada.id %}
+<a class="btn btn-primary" href="{% url 'pedido:entrada-update' itementrada.entrada.id %}"><i class="fa fa-arrow-left"></i> Voltar</a>
+
+{% endif %}
+        <table class="">
+            <thead>
+            <tr>
+                <th width="350px">Produto</th>
+                <th width="100px">Quantidade</th>
+                <th width="">Valor Unit.</th>
+                <th width="">Desconto</th>
+                <th width="">Total Item</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <form class="add_produto" action="" method="post">
+                {% csrf_token %}
+                {{form.errors}}
+            <tr class="add_produto">
+
+                <div hidden >{{form.entrada}}</div>
+                <td width="auto">{{form.produto}}</td>
+                <td>{{form.quantidade}}</td>
+                <td>{{form.valor_unitario}}</td>
+                <td>{{form.desconto_item}}</td>
+                <td>{{form.total_item}}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary text-light" type="submit"><i class="fa fa-check-circle" aria-hidden="true"> Atualizar</i></button>
+                </td>
+                <td>
+                </td>
+            </tr>
+                </form>
+            </tbody>
+        </table>
+{% endblock content %}
+{% block script %}
+<script>
+
+    var produto = $("select[name$='produto']");
+    var produto_input = $('.add_produto');
+
+
+
+    function calcular(){
+        var preco = $('input[name$="valor_unitario"]').val().replace(',','.');
+        var quantidade = $('input[name$="quantidade"]').val().replace(',','.');;
+        var desconto = $('input[name$="desconto_item"]').val().replace(',','.');;
+
+        var total_item = (parseFloat(preco) * parseFloat(quantidade) - parseFloat(desconto)).toFixed(2);
+
+        $('input[name$="total_item"]').val(total_item);
+    }
+
+    $(produto_input).on('change',function(){
+        calcular();
+    });
+
+    $('select[name$="produto"]').on('change',function(){
+        var produto = this.value
+        console.log(this.value);
+        $.ajax({
+            url:"/cadastro/produtoApi/"+produto,
+            dataType:"json",
+            type:"get",
+            success:function(data){
+                console.log(data);
+                $('input[name$="valor_unitario"]').val(data[0].preco);
+                calcular();
+
+            }
+        })
+    });
+
+</script>
+{% endblock script %}

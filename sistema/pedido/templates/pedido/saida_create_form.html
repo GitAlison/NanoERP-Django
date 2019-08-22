@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="p-1 card-header">
+        <h3 class="m-0 p-0 float-left">Novo Pedido</h3>
+        <div class="float-right button">
+            <a class="btn btn-primary" href="{% url 'pedido:saida-list' %}"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar</a>
+        </div>
+    </div>
+    <div class="card-block p-2">
+        <form action="" method="post">
+            {%csrf_token%}
+            <div class="row">
+                {{saida_form.errors}}
+                <div class="col-sm-6">
+
+                    {{saida_form.cliente.label}}
+                    {{saida_form.cliente}}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{saida_form.funcionario.label}}
+                            {{saida_form.funcionario}}
+                        </div>
+                        <div class="col-sm-6">
+                            {{saida_form.data_emissao.label}}
+                            {{saida_form.data_emissao}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+
+                </div>
+            </div>
+            <br>
+            <div class="row" >
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary"> <i class="fa fa-check" aria-hidden="true"></i> Continuar</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="card-footer text-muted">
+        <div class="float-right button">
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

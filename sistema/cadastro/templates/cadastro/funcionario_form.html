@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="p-1 card-header">
+        <h3 class="m-0 p-0 float-left">Registro de Funcionario</h3>
+        <div class="float-right button">
+            <a class="btn btn-primary" href="{% url 'cadastro:funcionario-list' %}"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar</a>
+        </div>
+    </div>
+    <div class="card-block p-2">
+        {% if form.errors %}
+        <div class="alert alert-warning" role="alert">
+            <strong>{{form.errors}}</strong>
+        </div>
+        {% endif %}
+        <form action="" method="post">
+            {%csrf_token%}
+            <div class="row">
+
+                <div class="col-sm-7">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            {{form.nome.label_tag}}
+                            {{form.nome}}
+                        </div>
+                        <div class="col-sm-4">
+                            {{form.tipo_pessoa.label_tag}}
+                            {{form.tipo_pessoa}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{form.rg_ie.label_tag}}
+                            {{form.rg_ie}}
+                        </div>
+                        <div class="col-sm-6">
+                            {{form.cpf_cnpj.label_tag}}
+                            {{form.cpf_cnpj}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{form.doc.label_tag}}
+                            {{form.doc}}
+                        </div>
+                        <div class="col-sm-6">
+                            {{form.data_nascimento.label_tag}}
+                            {{form.data_nascimento}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{form.data_admissao.label_tag}}
+                            {{form.data_admissao}}
+                        </div>
+                        <div class="col-sm-6">
+                            {{form.data_demissao.label_tag}}
+                            {{form.data_demissao}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{form.salario.label_tag}}
+                            {{form.salario}}
+                        </div>
+                        <div class="col-sm-6">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                        <div class="form-control">Foto</div>
+                </div>
+            </div>
+            <br>
+            <div class="row" >
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary"> <i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="card-footer text-muted">
+        <div class="float-right button">
+
+        <i class="fa fa-info" aria-hidden="true"></i>
+            O cadastro de produto tambem pode ser utilizado como cadastro de serviço e despesas
+        Usando abreviações como SER para serviço ou DES exemplo  SERV-Limpesa
+        </div>
+    </div>
+</div>
+{% endblock content %}
