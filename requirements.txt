@@ -21,7 +21,7 @@ PyJWT==1.7.1
 PyPDF2==1.26.0
 python-dateutil==2.8.0
 pytz==2018.4
-reportlab==3.5.23
+reportlab==3.5.55
 requests==2.22.0
 six==1.12.0
 sqlparse==0.3.0
